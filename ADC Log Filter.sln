@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADC Log Filter", "ADC Log Filter.csproj", "{2E2F2D00-E55D-4F2B-B6BF-C86290AB51FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E2F2D00-E55D-4F2B-B6BF-C86290AB51FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E2F2D00-E55D-4F2B-B6BF-C86290AB51FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E2F2D00-E55D-4F2B-B6BF-C86290AB51FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E2F2D00-E55D-4F2B-B6BF-C86290AB51FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F364603-774B-46E6-B9EB-A1136E342CD6}
+	EndGlobalSection
+EndGlobal
