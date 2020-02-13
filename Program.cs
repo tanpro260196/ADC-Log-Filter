@@ -116,11 +116,8 @@ namespace ADC_Log_Filter
                 {
                     if (filename.Length == 0)
                         break;
-                    if (!filename.Substring(filename.Length - 4).Contains('.'))
-                    {
-                        pathcheck = true;
-                        File.Add(new FileInfo(filename));
-                    }
+                    pathcheck = true;
+                    File.Add(new FileInfo(filename));
 
                 }
             }
