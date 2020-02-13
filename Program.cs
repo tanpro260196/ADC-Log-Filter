@@ -108,7 +108,7 @@ namespace ADC_Log_Filter
                 openFileDialog1.Title = "Select ALL syslog-xxx files";
                 openFileDialog1.CheckFileExists = true;
                 openFileDialog1.CheckPathExists = true;
-                openFileDialog1.Filter = "ADC Log Files(syslog)|";
+                openFileDialog1.Filter = "ADC Log Files (syslog-xxxx)|";
                 DialogResult result = openFileDialog1.ShowDialog();
                 if (result == DialogResult.Cancel)
                     break;
