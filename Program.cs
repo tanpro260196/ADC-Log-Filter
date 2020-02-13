@@ -11,9 +11,11 @@ namespace ADC_Log_Filter
         [STAThread]
         static void Main()
         {
+            List<string> csvexportdata = new List<string>();
+            csvexportdata.Add("No.,Log,ADC FW Reading");
             //CALL FILE SELECTION FUNCTION
             List<FileInfo> fileselection = Get_filepath();
-            if (fileselection == null)
+            if (fileselection.Count == 0)
                 return;
             //Loop through all selected files.
             foreach (FileInfo file in fileselection)
@@ -24,9 +26,16 @@ namespace ADC_Log_Filter
                 {
                     continue;
                 }
-                //PARSE AND EXPORT TO CSV
-                Data_export(adc_readings, file.DirectoryName, file.Name);
+                csvexportdata.AddRange(adc_readings);
             }
+            int i = 1;
+            for (int x = 1; x < csvexportdata.Count(); x++)
+            {
+                csvexportdata[x] = i.ToString() + "," + csvexportdata[x];
+                i++;
+            }
+            //PARSE AND EXPORT TO CSV
+            Data_export(csvexportdata, fileselection[0].DirectoryName, "ADC_Value");
         }
         //THIS FUNCTION IDENTIFY THE BEGINNING AND END OF EACH LOOP IN THE LOG. 
         static List<string> Readtext(string file)
@@ -80,7 +89,7 @@ namespace ADC_Log_Filter
                 if (text[i].Contains("current ADC="))
                 {
                     int datalocation = text[i].IndexOf("ADC=") + 4;
-                    adc_list.Add(text[i].Substring(datalocation, 3));
+                    adc_list.Add(text[i].Replace(',',' ') + "," + text[i].Substring(datalocation, 3));
                 }
             }
             return adc_list;
@@ -96,10 +105,10 @@ namespace ADC_Log_Filter
                 openFileDialog1.Multiselect = true;
                 openFileDialog1.InitialDirectory = @"C:\BatteryTest";
                 openFileDialog1.DefaultExt = "log";
-                openFileDialog1.Title = "Open Log File";
+                openFileDialog1.Title = "Select ALL syslog-xxx files";
                 openFileDialog1.CheckFileExists = true;
                 openFileDialog1.CheckPathExists = true;
-                openFileDialog1.Filter = "Log Files(*.log)| *.log";
+                openFileDialog1.Filter = "ADC Log Files(syslog)|";
                 DialogResult result = openFileDialog1.ShowDialog();
                 if (result == DialogResult.Cancel)
                     break;
@@ -107,7 +116,7 @@ namespace ADC_Log_Filter
                 {
                     if (filename.Length == 0)
                         break;
-                    if ((filename.Substring(filename.Length - 3)) == "log")
+                    if (!filename.Substring(filename.Length - 4).Contains('.'))
                     {
                         pathcheck = true;
                         File.Add(new FileInfo(filename));
@@ -126,7 +135,7 @@ namespace ADC_Log_Filter
             //Before writing to file. Check if file is writable or not.
             try
             {
-                FileStream checkwrite = System.IO.File.OpenWrite(@Path.Combine(folderpath, filename.Remove(filename.Length - 4) + ".csv"));
+                FileStream checkwrite = System.IO.File.OpenWrite(@Path.Combine(folderpath, filename + ".csv"));
                 checkwrite.Close();
             }
             catch (System.IO.IOException)
@@ -160,21 +169,21 @@ namespace ADC_Log_Filter
             }
 
             // Write the string array to a new file.
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine(folderpath, filename.Remove(filename.Length - 4) + ".csv")))
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(folderpath, filename + ".csv")))
             {
                 foreach (string line in data)
                     outputFile.WriteLine(line);
             }
 
             //Show a success message box after export and offer to open the file on the spot.
-            string message = "Data exported to " + folderpath + "\\" + filename.Remove(filename.Length - 4) + ".csv." + Environment.NewLine + Environment.NewLine + "Open exported file?";
+            string message = "Data exported to " + folderpath + "\\" + filename + ".csv." + Environment.NewLine + Environment.NewLine + "Open exported file?";
             string caption = "Success!";
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result;
             result = MessageBox.Show(message, caption, buttons, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.DefaultDesktopOnly);
             if (result == System.Windows.Forms.DialogResult.Yes)
             {
-                System.Diagnostics.Process.Start(folderpath + "\\" + filename.Remove(filename.Length - 4) + ".csv.");
+                System.Diagnostics.Process.Start(folderpath + "\\" + filename + ".csv.");
                 return;
             }
             else

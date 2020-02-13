@@ -7,7 +7,7 @@
     <ProjectGuid>{2E2F2D00-E55D-4F2B-B6BF-C86290AB51FC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ADC_Log_Filter</RootNamespace>
-    <AssemblyName>ADC Log Filter</AssemblyName>
+    <AssemblyName>ADC DUT Filter</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
