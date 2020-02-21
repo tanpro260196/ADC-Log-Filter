@@ -12,7 +12,7 @@ namespace ADC_Log_Filter
         static void Main()
         {
             List<string> csvexportdata = new List<string>();
-            csvexportdata.Add("No.,Log,ADC FW Reading");
+            csvexportdata.Add("No.,Log,ADC FW Reading,Vadc (V),Vbulk (V),Vac RMS at Parakeet");
             //CALL FILE SELECTION FUNCTION
             List<FileInfo> fileselection = Get_filepath();
             if (fileselection.Count == 0)
@@ -32,8 +32,10 @@ namespace ADC_Log_Filter
             for (int x = 1; x < csvexportdata.Count(); x++)
             {
                 csvexportdata[x] = i.ToString() + "," + csvexportdata[x];
-                i++;
+                i=i+11;
+                x = x + 11;
             }
+            csvexportdata[1] = csvexportdata[1] + ",=[@[ADC FW Reading]]/310,=[@[Vadc (V)]]*64.7/2.7,=[@[Vbulk (V)]]*PI()/4";
             //PARSE AND EXPORT TO CSV
             Data_export(csvexportdata, fileselection[0].DirectoryName, "ADC_Value");
         }
@@ -85,11 +87,14 @@ namespace ADC_Log_Filter
             for (i = 0; i < text.Count(); i++)
             {
                 //FIND LOOP START IDENTIFIER FIRST
-                //replace "LOOP: #" with loop start IDENTIFIER
                 if (text[i].Contains("current ADC="))
                 {
                     int datalocation = text[i].IndexOf("ADC=") + 4;
                     adc_list.Add(text[i].Replace(',',' ') + "," + text[i].Substring(datalocation, 3));
+                    for (int j = 0; j < 11; j++)
+                    {
+                        adc_list.Add(" ");
+                    }
                 }
             }
             return adc_list;
